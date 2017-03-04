@@ -58,6 +58,8 @@ define('forum/categories', ['components', 'translator', 'benchpress'], function 
 	}
 
 	function parseAndTranslate(posts, callback) {
+		// FIXME: benchpress doesn't support nested named blocks
+		// or RegExp block matching
 		benchpress.parse('categories', '(categories.)?posts', { categories: { posts: posts } }, function (html) {
 			translator.translate(html, function (translatedHTML) {
 				translatedHTML = $(translatedHTML);
