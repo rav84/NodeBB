@@ -3,7 +3,7 @@
 var async = require('async');
 var winston = require('winston');
 var nconf = require('nconf');
-var templates = require('templates.js');
+var benchpress = require('benchpressjs');
 var nodemailer = require('nodemailer');
 var sendmailTransport = require('nodemailer-sendmail-transport');
 var smtpTransport = require('nodemailer-smtp-transport');
@@ -143,7 +143,7 @@ var fallbackTransport;
 
 	function render(tpl, params, next) {
 		if (meta.config['email:custom:' + tpl.replace('emails/', '')]) {
-			var text = templates.parse(meta.config['email:custom:' + tpl.replace('emails/', '')], params);
+			var text = benchpress.parse(meta.config['email:custom:' + tpl.replace('emails/', '')], params);
 			next(null, text);
 		} else {
 			app.render(tpl, params, next);

@@ -1,7 +1,13 @@
 'use strict';
 
 
-define('forum/account/edit', ['forum/account/header', 'translator', 'components', 'pictureCropper'], function (header, translator, components, pictureCropper) {
+define('forum/account/edit', [
+	'forum/account/header',
+	'translator',
+	'components',
+	'pictureCropper',
+	'benchpress',
+], function (header, translator, components, pictureCropper, benchpress) {
 	var AccountEdit = {};
 
 	AccountEdit.init = function () {
@@ -82,7 +88,7 @@ define('forum/account/edit', ['forum/account/header', 'translator', 'components'
 					return memo || cur.type === 'uploaded';
 				}, false);
 
-				templates.parse('partials/modals/change_picture_modal', {
+				benchpress.parse('partials/modals/change_picture_modal', {
 					pictures: pictures,
 					uploaded: uploaded,
 					allowProfileImageUploads: ajaxify.data.allowProfileImageUploads,
@@ -233,7 +239,7 @@ define('forum/account/edit', ['forum/account/header', 'translator', 'components'
 
 		modal.find('[data-action="upload-url"]').on('click', function () {
 			modal.modal('hide');
-			templates.parse('partials/modals/upload_picture_from_url_modal', {}, function (html) {
+			benchpress.parse('partials/modals/upload_picture_from_url_modal', {}, function (html) {
 				translator.translate(html, function (html) {
 					var uploadModal = $(html);
 					uploadModal.modal('show');

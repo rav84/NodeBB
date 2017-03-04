@@ -2,7 +2,7 @@
 
 var async = require('async');
 var winston = require('winston');
-var templates = require('templates.js');
+var benchpress = require('benchpressjs');
 
 var plugins = require('../plugins');
 var translator = require('../../public/src/modules/translator');
@@ -54,7 +54,8 @@ widgets.render = function (uid, area, req, res, callback) {
 
 					if (widget.data.container && widget.data.container.match('{body}')) {
 						translator.translate(widget.data.title, function (title) {
-							html = templates.parse(widget.data.container, {
+							// FIXME: benchpress doesn't support runtime compilation
+							html = benchpress.parse(widget.data.container, {
 								title: title,
 								body: html,
 							});

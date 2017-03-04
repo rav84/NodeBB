@@ -1,7 +1,7 @@
 'use strict';
 
 
-define('notifications', ['sounds', 'translator', 'components'], function (sounds, translator, components) {
+define('notifications', ['sounds', 'translator', 'components', 'benchpress'], function (sounds, translator, components, benchpress) {
 	var Notifications = {};
 
 	var unreadNotifs = {};
@@ -130,7 +130,7 @@ define('notifications', ['sounds', 'translator', 'components'], function (sounds
 			}
 			translator.toggleTimeagoShorthand();
 
-			templates.parse('partials/notifications_list', { notifications: notifs }, function (html) {
+			benchpress.parse('partials/notifications_list', { notifications: notifs }, function (html) {
 				notifList.translateHtml(html);
 			});
 		});

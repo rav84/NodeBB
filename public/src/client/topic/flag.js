@@ -1,7 +1,7 @@
 'use strict';
 
 
-define('forum/topic/flag', [], function () {
+define('forum/topic/flag', ['translator', 'benchpress'], function (translator, benchpress) {
 	var Flag = {};
 	var flagModal;
 	var flagCommit;
@@ -35,10 +35,8 @@ define('forum/topic/flag', [], function () {
 	};
 
 	function parseModal(tplData, callback) {
-		templates.parse('partials/modals/flag_post_modal', tplData, function (html) {
-			require(['translator'], function (translator) {
-				translator.translate(html, callback);
-			});
+		benchpress.parse('partials/modals/flag_post_modal', tplData, function (html) {
+			translator.translate(html, callback);
 		});
 	}
 

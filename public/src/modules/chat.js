@@ -10,7 +10,8 @@ define('chat', [
 	'forum/chats/messages',
 	'translator',
 	'scrollStop',
-], function (components, taskbar, S, sounds, Chats, ChatsMessages, translator, scrollStop) {
+	'benchpress',
+], function (components, taskbar, S, sounds, Chats, ChatsMessages, translator, scrollStop, benchpress) {
 	var module = {};
 	var newMessage = false;
 
@@ -117,7 +118,7 @@ define('chat', [
 				return room.teaser;
 			});
 
-			templates.parse('partials/chats/dropdown', {
+			benchpress.parse('partials/chats/dropdown', {
 				rooms: rooms,
 			}, function (html) {
 				translator.translate(html, function (translated) {

@@ -10,13 +10,16 @@ $(document).ready(function () {
 	var ajaxifyTimer;
 
 	var translator;
+	var benchpress;
 	var retry = true;
 	var previousBodyClass = '';
 
+	// FIXME
 	// Dumb hack to fool ajaxify into thinking translator is still a global
 	// When ajaxify is migrated to a require.js module, then this can be merged into the "define" call
-	require(['translator'], function (_translator) {
+	require(['translator', 'benchpress'], function (_translator, _benchpress) {
 		translator = _translator;
+		benchpress = _benchpress;
 	});
 
 	$(window).on('popstate', function (ev) {
@@ -173,7 +176,7 @@ $(document).ready(function () {
 	function renderTemplate(url, tpl_url, data, callback) {
 		$(window).trigger('action:ajaxify.loadingTemplates', {});
 
-		templates.parse(tpl_url, data, function (template) {
+		benchpress.parse(tpl_url, data, function (template) {
 			translator.translate(template, function (translatedTemplate) {
 				translatedTemplate = translator.unescape(translatedTemplate);
 				$('body').removeClass(previousBodyClass).addClass(data.bodyClass);
@@ -317,20 +320,7 @@ $(document).ready(function () {
 	};
 
 	ajaxify.loadTemplate = function (template, callback) {
-		if (templates.cache[template]) {
-			callback(templates.cache[template]);
-		} else {
-			$.ajax({
-				url: config.relative_path + '/assets/templates/' + template + '.tpl?' + config['cache-buster'],
-				type: 'GET',
-				success: function (data) {
-					callback(data.toString());
-				},
-				error: function (error) {
-					throw new Error('Unable to load template: ' + template + ' (' + error.statusText + ')');
-				},
-			});
-		}
+		require([config.relative_path + '/assets/templates/' + template + '.tpl'], callback);
 	};
 
 	function ajaxifyAnchors() {
@@ -404,7 +394,9 @@ $(document).ready(function () {
 		});
 	}
 
-	templates.registerLoader(ajaxify.loadTemplate);
+	require(['benchpress'], function (benchpress) {
+		benchpress.registerLoader(ajaxify.loadTemplate);
+	});
 
 	if (window.history && window.history.pushState) {
 		// Progressive Enhancement, ajaxify available only to modern browsers
@@ -412,9 +404,4 @@ $(document).ready(function () {
 	}
 
 	app.load();
-
-	$('[type="text/tpl"][data-template]').each(function () {
-		templates.cache[$(this).attr('data-template')] = $('<div/>').html($(this).html()).text();
-		$(this).parent().remove();
-	});
 });

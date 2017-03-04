@@ -6,7 +6,8 @@ define('forum/account/header', [
 	'pictureCropper',
 	'components',
 	'translator',
-], function (coverPhoto, pictureCropper, components, translator) {
+	'benchpress',
+], function (coverPhoto, pictureCropper, components, translator, benchpress) {
 	var AccountHeader = {};
 	var isAdminOrSelfOrGlobalMod;
 
@@ -113,7 +114,7 @@ define('forum/account/header', [
 	}
 
 	function banAccount() {
-		templates.parse('admin/partials/temporary-ban', {}, function (html) {
+		benchpress.parse('admin/partials/temporary-ban', {}, function (html) {
 			bootbox.dialog({
 				className: 'ban-modal',
 				title: '[[user:ban_account]]',

@@ -12,7 +12,22 @@ app.cacheBuster = null;
 	var showWelcomeMessage = !!utils.params().loggedin;
 	var showBannedMessage = !!utils.params().banned && app.user && app.user.uid === 0;
 
-	templates.setGlobal('config', config);
+	require(['benchpress'], function (benchpress) {
+		benchpress.setGlobal('config', config);
+
+		// Deprecated
+		if (typeof Object.defineProperty !== 'function') {
+			window.templates = benchpress;
+			return;
+		}
+		Object.defineProperty(window, 'templates', {
+			get: function () {
+				console.warn('[deprecated] Accessing benchpress (formerly know as templates.js) from the global is deprecated. Use require.js instead.');
+
+				return benchpress;
+			},
+		});
+	});
 
 	app.cacheBuster = config['cache-buster'];
 
@@ -74,10 +89,10 @@ app.cacheBuster = null;
 			}
 		});
 
-		require(['taskbar', 'helpers', 'forum/pagination'], function (taskbar, helpers, pagination) {
+		require(['taskbar', 'helpers', 'forum/pagination', 'benchpress'], function (taskbar, helpers, pagination, benchpress) {
 			taskbar.init();
 
-			helpers.register();
+			helpers.register(benchpress);
 
 			pagination.init();
 
@@ -599,7 +614,7 @@ app.cacheBuster = null;
 	};
 
 	app.parseAndTranslate = function (template, blockName, data, callback) {
-		require(['translator'], function (translator) {
+		require(['translator', 'benchpress'], function (translator, benchpress) {
 			function translate(html, callback) {
 				translator.translate(html, function (translatedHTML) {
 					translatedHTML = translator.unescape(translatedHTML);
@@ -608,13 +623,13 @@ app.cacheBuster = null;
 			}
 
 			if (typeof blockName === 'string') {
-				templates.parse(template, blockName, data, function (html) {
+				benchpress.parse(template, blockName, data, function (html) {
 					translate(html, callback);
 				});
 			} else {
 				callback = data;
 				data = blockName;
-				templates.parse(template, data, function (html) {
+				benchpress.parse(template, data, function (html) {
 					translate(html, callback);
 				});
 			}

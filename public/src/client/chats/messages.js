@@ -1,7 +1,7 @@
 'use strict';
 
 
-define('forum/chats/messages', ['components', 'sounds', 'translator'], function (components, sounds, translator) {
+define('forum/chats/messages', ['components', 'sounds', 'translator', 'benchpress'], function (components, sounds, translator, benchpress) {
 	var messages = {};
 
 	messages.sendMessage = function (roomId, inputEl) {
@@ -77,7 +77,7 @@ define('forum/chats/messages', ['components', 'sounds', 'translator'], function 
 
 
 	messages.parseMessage = function (data, callback) {
-		templates.parse('partials/chats/message' + (Array.isArray(data) ? 's' : ''), {
+		benchpress.parse('partials/chats/message' + (Array.isArray(data) ? 's' : ''), {
 			messages: data,
 		}, function (html) {
 			translator.translate(html, callback);

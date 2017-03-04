@@ -252,17 +252,9 @@
 		return icons;
 	};
 
-	exports.register = function () {
-		var templates;
-
-		if (typeof module === 'object') {
-			templates = require('templates.js');
-		} else {
-			templates = window.templates;
-		}
-
+	exports.register = function (benchpress) {
 		Object.keys(helpers).forEach(function (helperName) {
-			templates.registerHelper(helperName, helpers[helperName]);
+			benchpress.registerHelper(helperName, helpers[helperName]);
 		});
 	};
 

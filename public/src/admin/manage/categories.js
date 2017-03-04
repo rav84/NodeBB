@@ -1,7 +1,7 @@
 'use strict';
 
 
-define('admin/manage/categories', ['vendor/jquery/serializeObject/jquery.ba-serializeobject.min', 'translator'], function (serialize, translator) {
+define('admin/manage/categories', ['vendor/jquery/serializeObject/jquery.ba-serializeobject.min', 'translator', 'benchpress'], function (serialize, translator, benchpress) {
 	var	Categories = {};
 	var newCategoryId = -1;
 	var sortables;
@@ -39,7 +39,7 @@ define('admin/manage/categories', ['vendor/jquery/serializeObject/jquery.ba-seri
 				return app.alertError(err.message);
 			}
 
-			templates.parse('admin/partials/categories/create', {
+			benchpress.parse('admin/partials/categories/create', {
 				categories: categories,
 			}, function (html) {
 				var modal = bootbox.dialog({
@@ -179,7 +179,7 @@ define('admin/manage/categories', ['vendor/jquery/serializeObject/jquery.ba-seri
 		}
 
 		function continueRender() {
-			templates.parse('admin/partials/categories/category-rows', {
+			benchpress.parse('admin/partials/categories/category-rows', {
 				cid: parentId,
 				categories: categories,
 			}, function (html) {

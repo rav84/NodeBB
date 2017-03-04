@@ -1,7 +1,7 @@
 'use strict';
 
 
-define('admin/general/navigation', ['translator', 'iconSelect', 'jqueryui'], function (translator, iconSelect) {
+define('admin/general/navigation', ['translator', 'iconSelect', 'benchpress', 'jqueryui'], function (translator, iconSelect, benchpress) {
 	var navigation = {};
 	var available;
 
@@ -68,15 +68,14 @@ define('admin/general/navigation', ['translator', 'iconSelect', 'jqueryui'], fun
 		data.enabled = false;
 		data.index = (parseInt($('#enabled').children().last().attr('data-index'), 10) || 0) + 1;
 
-		templates.parse('admin/general/navigation', 'navigation', { navigation: [data] }, function (li) {
+		benchpress.parse('admin/general/navigation', 'navigation', { navigation: [data] }, function (li) {
 			translator.translate(li, function (li) {
 				li = $(translator.unescape(li));
 				el.after(li);
 				el.remove();
 			});
 		});
-
-		templates.parse('admin/general/navigation', 'enabled', { enabled: [data] }, function (li) {
+		benchpress.parse('admin/general/navigation', 'enabled', { enabled: [data] }, function (li) {
 			translator.translate(li, function (li) {
 				li = $(translator.unescape(li));
 				$('#enabled').append(li);

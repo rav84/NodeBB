@@ -6,7 +6,8 @@ define('admin/manage/group', [
 	'iconSelect',
 	'admin/modules/colorpicker',
 	'translator',
-], function (memberList, iconSelect, colorpicker, translator) {
+	'benchpress',
+], function (memberList, iconSelect, colorpicker, translator, benchpress) {
 	var Groups = {};
 
 	Groups.init = function () {
@@ -99,7 +100,7 @@ define('admin/manage/group', [
 					'icon:text': userLabel.attr('data-usericon-text'),
 				};
 
-				templates.parse('admin/partials/groups/memberlist', 'members', {
+				benchpress.parse('admin/partials/groups/memberlist', 'members', {
 					group: {
 						isOwner: ajaxify.data.group.isOwner,
 						members: [member],

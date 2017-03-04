@@ -48,7 +48,7 @@ function byType(type, req, res, next) {
 				return next();
 			}
 			res.json(data);
-		}
+		},
 	], next);
 }
 
